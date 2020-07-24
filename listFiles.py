@@ -20,7 +20,7 @@ def last_sunday():  # UD Bauru Rule - Servers reboot every Sunday, so let's don'
         is_deletable = datetime.now() - timedelta(days=5)
     elif local_time == 5:  # 5 is saturday. Last sunday is -6 days
         is_deletable = datetime.now() - timedelta(days=6)
-    else:  # 7 is sunday. Last sunday is -7 days.
+    else:  # 6 is sunday. Last sunday is -7 days.
         is_deletable = datetime.now() - timedelta(days=7)
     return is_deletable
 
