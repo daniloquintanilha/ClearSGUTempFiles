@@ -6,7 +6,7 @@ from os import chdir
 from datetime import datetime, timedelta
 
 
-def last_sunday():  # UD Bauru Rule - Servers reboot every Sunday, so let's don't delete today sunday files
+def last_sunday():  # UD Bauru Rule - Servers reboot every Sunday, so let's don't delete sunday files
     local_time = datetime.today().weekday()
     if local_time == 0:  # 0 is monday. Last sunday is -1 day
         is_deletable = datetime.now() - timedelta(days=1)
@@ -20,7 +20,7 @@ def last_sunday():  # UD Bauru Rule - Servers reboot every Sunday, so let's don'
         is_deletable = datetime.now() - timedelta(days=5)
     elif local_time == 5:  # 5 is saturday. Last sunday is -6 days
         is_deletable = datetime.now() - timedelta(days=6)
-    else:  # 2 is sunday. Last sunday is -7 days.
+    else:  # 7 is sunday. Last sunday is -7 days.
         is_deletable = datetime.now() - timedelta(days=7)
     return is_deletable
 
@@ -36,9 +36,9 @@ for file in tempFiles:
             date_hour_file = (datetime.strptime(time.ctime(os.path.getctime(file)), "%a %b %d %H:%M:%S %Y"))
             localtime = time.asctime(time.localtime(time.time()))
 
-            # The first "IF" remove all temp files since the last sunday.
+            # The second "IF" remove all temp files since the last sunday.
             # If your Unimed want to remove only the files since last 7 days, comment
-            # the last "IF" and uncomment the first one.
+            # the first "IF" and uncomment the last one.
 
             # if date_hour_file <= (date_hour_file - timedelta(days=7)):
             if date_hour_file <= last_sunday():
