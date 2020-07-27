@@ -25,14 +25,27 @@ def last_sunday():  # UD Bauru Rule - Servers reboot every Sunday, so let's don'
     return is_deletable
 
 
-directory = '//sguhomo/sguhomo/SGU_20'
+def write_log(deleted_files):
+    with open('log_deleted_files.txt', 'a+') as log_file:
+        log_file.seek(0)
+        data = log_file.read(100)
+        if len(data) > 0:
+            log_file.write('\n')
+        log_file.write("Executed: " + datetime.now().strftime("%d/%m/%Y %H:%M:%S") + '\n')
+        log_file.write("List of removed temp files: " + '\n')
+        for reg in deleted_files:
+            log_file.write(reg)
+            log_file.write('\n')
+
+
+directory = '//sgu/sgu/SGU'  # Set here your SGU folder
 chdir(directory)
 archives = []
-tempFiles = glob('*.CDX') + glob('*.DBF') + glob('*.FPT')
+tempFiles = glob('*.CDX') + glob('*.DBF') + glob('*.FPT')  # Extensions that are junk files
 
 for file in tempFiles:
-    if fnmatch.fnmatch(file, 'GX*'):
-        if len(file) == 12:
+    if fnmatch.fnmatch(file, 'GX*'):  # All junk files starts with 'GX'
+        if len(file) == 12:  # 'GX------.---' == 12 positions
             date_hour_file = (datetime.strptime(time.ctime(os.path.getctime(file)), "%a %b %d %H:%M:%S %Y"))
             localtime = time.asctime(time.localtime(time.time()))
 
@@ -45,5 +58,6 @@ for file in tempFiles:
                 archives.append(file)
                 os.remove(file)
 
+write_log(archives)
 print("Deleted Files: ")
 print(archives)
